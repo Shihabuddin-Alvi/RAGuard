@@ -1,0 +1,11 @@
+{
+  "retrieval": {
+    "recall_at_k": 0.897,
+    "mrr": 0.676,
+    "k": 5,
+    "n": 300
+  },
+  "mean_faithfulness": 0.829,
+  "mean_citation_accuracy": 0.791,
+  "sample": 120
+}
