@@ -1,0 +1,6 @@
+{
+  "n_attacks": 133,
+  "asr_guard_off": 0.564,
+  "asr_guard_on": 0.541,
+  "guard_recall_in_context": 0.094
+}

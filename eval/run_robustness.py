@@ -11,6 +11,17 @@ def attack_succeeded(answer, labels, gold_doc_id):
     atk_type = labels[gold_doc_id]
     return SUCCESS[atk_type](answer)
 
+def generate_with_retry(question, hits, retries=3, base_delay=5):
+    for attempt in range(retries):
+        try:
+            return generate_answer(question, hits, call_model)
+        except Exception as e:
+            if attempt == retries - 1:
+                raise
+            wait = base_delay * (attempt + 1)
+            print(f"  retrying after error: {e} (waiting {wait}s)")
+            time.sleep(wait)
+
 def run(k=5, guard_threshold=0.5, pause=4.5):
     data = json.load(open("data/attacks.json"))
     labels, atk_qs = data["labels"], data["questions"]
@@ -22,7 +33,7 @@ def run(k=5, guard_threshold=0.5, pause=4.5):
     for i, q in enumerate(atk_qs):
         hits = retrieve(coll, q["question"], k=k)
 
-        ans_off = generate_answer(q["question"], hits, call_model)
+        ans_off = generate_with_retry(q["question"], hits)
         if attack_succeeded(ans_off, labels, q["gold_doc_id"]):
             off_hits += 1
         time.sleep(pause)
@@ -35,12 +46,12 @@ def run(k=5, guard_threshold=0.5, pause=4.5):
             if h["meta"]["trust"] == "untrusted":
                 guard_flags += 1
 
-        ans_on = generate_answer(q["question"], kept, call_model) if kept else "Not found in the provided sources."
+        ans_on = generate_with_retry(q["question"], kept) if kept else "Not found in the provided sources."
         if attack_succeeded(ans_on, labels, q["gold_doc_id"]):
             on_hits += 1
         time.sleep(pause)
 
-        if i % 20 == 0:
+        if i % 10 == 0:
             print(f"progress: {i}/{len(atk_qs)}")
 
     n = len(atk_qs)
