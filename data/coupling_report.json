@@ -1,0 +1,7 @@
+{
+  "threshold": 0.5,
+  "guard_false_positive_rate_clean": 0.0,
+  "faithfulness_guard_off": 0.829,
+  "faithfulness_guard_on": 0.801,
+  "recall_guard_off": 0.897
+}
