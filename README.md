@@ -1,13 +1,3 @@
----
-title: RAGuard
-emoji: 🛡️
-colorFrom: blue
-colorTo: purple
-sdk: docker
-app_port: 7860
-pinned: false
----
-
 # RAGuard
 
 A retrieval API that grounds every answer in its sources and blocks instructions an attacker hides inside those documents.
@@ -57,6 +47,37 @@ POST /query
 {"question": "...", "k": 5, "guard": true, "guard_threshold": 0.5}
 
 Returns the answer, the chunk ids used, which chunks the guard dropped and their injection probability, and a faithfulness score. Set "guard": false to see the same question without the defense.
+
+## Run it yourself
+
+The full pipeline, corpus, index, API, and UI, runs locally with no paid service required. The guard model downloads automatically from Hugging Face Hub on first run if not already present.
+
+```bash
+git clone https://github.com/Shihabuddin-Alvi/RAGuard.git
+cd RAGuard
+python3.11 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+echo "GEMINI_API_KEY=your_key_here" > .env
+```
+
+Start the API:
+```bash
+uvicorn api.main:app --reload
+```
+
+Start the UI in a second terminal:
+```bash
+streamlit run ui/app.py
+```
+
+Or run both in one container:
+```bash
+docker build -t raguard .
+docker run -p 7860:7860 -e GEMINI_API_KEY=your_key_here raguard
+```
+
+A live hosted demo isn't included. Hugging Face Spaces moved Docker and Gradio SDKs behind a paid plan shortly before this was built, and this pipeline's three models, embedding, guard, and NLI scorer, need more RAM than a free-tier host provides. Running it locally costs nothing and takes about two minutes.
 
 ## What I learned
 
