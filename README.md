@@ -1,3 +1,13 @@
+---
+title: RAGuard
+emoji: 🛡️
+colorFrom: blue
+colorTo: purple
+sdk: docker
+app_port: 7860
+pinned: false
+---
+
 # RAGuard
 
 A retrieval API that grounds every answer in its sources and blocks instructions an attacker hides inside those documents.
