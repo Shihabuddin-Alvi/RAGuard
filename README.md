@@ -77,6 +77,8 @@ docker build -t raguard .
 docker run -p 7860:7860 -e GEMINI_API_KEY=your_key_here raguard
 ```
 
+The Chroma index is committed to the repo so a fresh clone doesn't need to rebuild it. Because of that, git may show data/chroma/chroma.sqlite3 as modified after you run the app locally, even with no real changes made. That's SQLite touching its own internal bookkeeping on open, not new data. Safe to discard with `git restore data/chroma/chroma.sqlite3`.
+
 A live hosted demo isn't included. Hugging Face Spaces moved Docker and Gradio SDKs behind a paid plan shortly before this was built, and this pipeline's three models, embedding, guard, and NLI scorer, need more RAM than a free-tier host provides. Running it locally costs nothing and takes about two minutes.
 
 ## What I learned
