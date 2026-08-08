@@ -14,10 +14,10 @@ Corpus: 54 deduplicated documents from SQuAD v1.1 validation, 59 chunks, 800 lab
 
 | Metric | Value |
 |---|---|
-| Recall@5 | 0.8970 |
-| MRR | 0.6760 |
-| Mean faithfulness | 0.8290 |
-| Mean citation accuracy | 0.7910 |
+| Recall@5 | 0.897 |
+| MRR | 0.676 |
+| Mean faithfulness | 0.829 |
+| Mean citation accuracy | 0.791 |
 
 Faithfulness is scored per sentence against each retrieved chunk individually, taking the max entailment score, rather than against all retrieved chunks concatenated together. Concatenating chunks into one premise dilutes the entailment signal enough to collapse a correct answer's score to near zero. Citation brackets like [2], [4] get stripped from a sentence before the entailment check runs. Left in, they read as content mismatches to the NLI model and drop a correct sentence's score by a similar margin.
 
