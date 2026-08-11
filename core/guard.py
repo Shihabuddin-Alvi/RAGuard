@@ -25,3 +25,27 @@ def screen(hits, threshold=0.5):
         p = injection_prob(h["text"])
         (dropped if p >= threshold else kept).append({**h, "injection_prob": round(p, 3)})
     return kept, dropped
+
+
+# --- sentence-level screening (Session 14) ---
+import nltk
+nltk.download("punkt", quiet=True)
+
+def chunk_injection_prob(text):
+    sents = [s for s in nltk.sent_tokenize(text) if s.strip()]
+    if not sents:
+        return injection_prob(text), text
+    best_p, best_s = 0.0, sents[0]
+    for s in sents:
+        p = injection_prob(s)
+        if p > best_p:
+            best_p, best_s = p, s
+    return best_p, best_s
+
+def screen_sentence(hits, threshold=0.5):
+    kept, dropped = [], []
+    for h in hits:
+        p, worst = chunk_injection_prob(h["text"])
+        rec = {**h, "injection_prob": round(p, 3), "worst_sentence": worst}
+        (dropped if p >= threshold else kept).append(rec)
+    return kept, dropped
