@@ -4,7 +4,7 @@ A retrieval API that grounds every answer in its sources and blocks instructions
 
 ## The problem
 
-An assistant answering from documents creates risk the moment a claim has no source behind it. In regulated settings, an ungrounded claim counts as a compliance failure, not an inconvenience. This project measures whether each sentence in an answer traces back to a retrieved passage, and reports retrieval quality and answer faithfulness as numbers.
+A RAG assistant is only as good as its sources. The moment a claim has no passage behind it, the risk starts. In regulated industries, an ungrounded claim is a compliance failure, not a minor issue. This project checks each sentence in an answer against the retrieved passages, then scores retrieval quality and answer faithfulness as numbers.
 
 A retrieved document is also an untrusted channel. An attacker hides an instruction inside a document a retrieval system later pulls into context, a different threat from a user typing a jailbreak directly into a chat box. This project builds that attack, measures how often it succeeds, and measures how much a chunk-level injection classifier actually blocks it.
 
